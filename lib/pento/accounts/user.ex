@@ -60,7 +60,7 @@ defmodule Pento.Accounts.User do
     changeset
     |> validate_required(:username)
     |> validate_format(:username, ~r/^[A-Za-z0-9_\-\.]+$/, message: "must contain only alphanumerics and the following characters: -_.")
-    |> validate_length(:username, max: 32)
+    |> validate_length(:username, min: 2, max: 32)
     |> unsafe_validate_unique(:username, Pento.Repo)
     |> unique_constraint(:username)
   end
@@ -79,6 +79,22 @@ defmodule Pento.Accounts.User do
       changeset
     end
   end
+
+  @doc """
+  A user changeset for changing the username.
+
+  It requires the username to change otherwise an error is added.
+  """
+  def username_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:username])
+    |> validate_username()
+    |> case do
+      %{changes: %{username: _}} = changeset -> changeset
+      %{} = changeset -> add_error(changeset, :username, "did not change")
+    end
+  end
+
 
   @doc """
   A user changeset for changing the email.

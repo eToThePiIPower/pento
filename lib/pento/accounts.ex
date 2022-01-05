@@ -129,6 +129,28 @@ defmodule Pento.Accounts do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+
+  ## Examples
+
+      iex> change_user_username(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_username(%User{} = user, attrs \\ %{}) do
+    User.username_changeset(user, attrs)
+  end
+
+  @doc """
+  Updates the user's username
+  """
+  def update_user_username(user, attrs \\ %{}) do
+    user
+    |> change_user_username(attrs)
+    |> Repo.update
+  end
+
+  @doc """
   Updates the user email using the given token.
 
   If the token matches, the user email is updated and the token is deleted.

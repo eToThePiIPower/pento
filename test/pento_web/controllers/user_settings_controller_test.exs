@@ -20,6 +20,38 @@ defmodule PentoWeb.UserSettingsControllerTest do
     end
   end
 
+  describe "PUT /users/settings (change username form)" do
+    test "updates the user username", %{conn: conn, user: user} do
+      new_username_conn =
+        put(conn, Routes.user_settings_path(conn, :update), %{
+          "action" => "update_username",
+          "user" => %{
+            "username" => "new_username"
+          }
+        })
+
+      assert redirected_to(new_username_conn) == Routes.user_settings_path(conn, :edit)
+      assert get_flash(new_username_conn, :info) =~ "Username updated successfully"
+      assert Accounts.get_user!(user.id).username == "new_username"
+    end
+
+    test "does not update username on invalid data", %{conn: conn, user: user} do
+      new_username_conn =
+        put(conn, Routes.user_settings_path(conn, :update), %{
+          "action" => "update_username",
+          "user" => %{
+            "username" => "x"
+          }
+        })
+
+      response = html_response(new_username_conn, 200)
+      assert response =~ "should be at least 2 character(s)"
+      assert response =~ "Oops, something went wrong!"
+      refute Accounts.get_user!(user.id).username == "new_username"
+    end
+  end
+
+
   describe "PUT /users/settings (change password form)" do
     test "updates the user password and resets tokens", %{conn: conn, user: user} do
       new_password_conn =

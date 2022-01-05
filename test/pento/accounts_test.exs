@@ -310,6 +310,35 @@ defmodule Pento.AccountsTest do
     end
   end
 
+  describe "update_user_username/2" do
+    setup do
+      %{user: user_fixture()}
+    end
+
+    test "updates the username", %{user: user} do
+      {:ok, user} =
+        Accounts.update_user_username(user, %{
+          username: "new_username"
+        })
+
+      assert Accounts.get_user!(user.id).username == "new_username"
+    end
+
+    test "validates the username has changed", %{user: user} do
+      {:error, changeset} =
+        Accounts.update_user_username(user, %{username: user.username})
+
+      assert "did not change" in errors_on(changeset).username
+    end
+
+    test "validates the username", %{user: user} do
+      {:error, changeset} =
+        Accounts.update_user_username(user, %{username: "s"})
+
+      assert "should be at least 2 character(s)" in errors_on(changeset).username
+    end
+  end
+
   describe "generate_user_session_token/1" do
     setup do
       %{user: user_fixture()}
