@@ -1,8 +1,10 @@
 <h1>Settings</h1>
 
-<h3>Change email</h3>
+<section class="row">
 
-<.form let={f} for={@username_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_username">
+<.form let={f} for={@username_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_username" class="col-12">
+  <h3>Update profile</h3>
+
   <%= if @username_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -20,7 +22,13 @@
   </div>
 </.form>
 
-<.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email">
+</section>
+
+<section class="row row-gray">
+
+<.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email" class="col-6">
+  <h3>Change email</h3>
+
   <%= if @email_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -42,9 +50,9 @@
   </div>
 </.form>
 
-<h3>Change password</h3>
+<.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password" class="col-6">
+  <h3>Change password</h3>
 
-<.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password">
   <%= if @password_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -69,3 +77,5 @@
     <%= submit "Change password" %>
   </div>
 </.form>
+
+</section>
