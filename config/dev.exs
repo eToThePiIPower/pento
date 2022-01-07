@@ -25,7 +25,9 @@ config :pento, PentoWeb.Endpoint,
   secret_key_base: "ARx28gbZf2R5nh1cKVS2/Mpju+mQ1uqoVl18Q6WP9t/oN9Omt88TcidhH7K+SDuo",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    #Configure sass watchers
+    sass: {DartSass, :install_and_run, [:default, ~w(--embed-source-map --source-map-urls=absolute --watch)]}
   ]
 
 # ## SSL Support
